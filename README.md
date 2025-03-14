@@ -1,82 +1,95 @@
-(Due to technical issues, the search service is temporarily unavailable.)
-
-```markdown
 # 🎮 CartPole Q-Learning Agent 🤖
 
 ![OpenAI Gym](https://img.shields.io/badge/OpenAI%20Gym-v1.0-blueviolet)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
+![Reinforcement Learning](https://img.shields.io/badge/Reinforcement%20Learning-Q--Learning-orange)
 
-A Q-learning implementation for solving OpenAI Gym's CartPole-v1 environment. This project demonstrates reinforcement learning fundamentals with dynamic state discretization and exploration-exploitation strategies.
+A **Q-Learning** implementation to solve OpenAI Gym's **CartPole-v1** environment. This project demonstrates how to balance a pole on a moving cart using reinforcement learning with state discretization and ε-greedy exploration.
 
 ![CartPole Demo](https://github.com/yourusername/cartpole-qlearning/raw/main/assets/cartpole_demo.gif)  
-*(Sample agent balancing the pole after training)*
+*(Agent balancing the pole after training)*
+
+---
 
 ## 🚀 Features
-- 🧠 Q-learning algorithm with ε-greedy exploration
-- 🔢 State space discretization for continuous environments
-- 📈 Progressive epsilon decay strategy
-- 📊 Performance tracking and evaluation metrics
-- 🎯 Solution achieves 400+ average reward in 100 evaluation episodes
+
+- 🧠 **Q-Learning Algorithm**: Implements the core Q-learning update rule for reinforcement learning.
+- 🔢 **State Discretization**: Converts continuous state space into discrete buckets for efficient learning.
+- 🎯 **ε-Greedy Exploration**: Balances exploration and exploitation for optimal policy learning.
+- 📉 **Epsilon Decay**: Gradually reduces exploration rate as the agent learns.
+- 📊 **Performance Tracking**: Logs rewards and metrics during training and evaluation.
+
+---
 
 ## 📦 Installation
 
-```bash
-# Clone repository
-git clone https://github.com/yourusername/cartpole-qlearning.git
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/cartpole-qlearning.git
+   cd cartpole-qlearning
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
-```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-**Requirements:**  
-`gym==0.26.2` | `numpy==1.24.3` | `python>=3.8`
+**Dependencies:**
+- `gym==0.26.2`
+- `numpy==1.24.3`
+- `matplotlib==3.7.1` (for visualization)
+
+---
 
 ## 🛠️ Usage
 
-### Training the Agent
-```python
+### Train the Agent
+Run the training script:
+```bash
 python train.py
 ```
 
-### Evaluation Mode
-```python
+### Evaluate the Agent
+Evaluate the trained agent:
+```bash
 python evaluate.py
 ```
 
+---
+
 ## 🧠 Algorithm Overview
 
-### Q-Learning Equation
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://github.com/yourusername/cartpole-qlearning/raw/main/assets/q-learning-equation.png" width="300">
-    </td>
-  </tr>
-</table>
+### Q-Learning Update Rule
+The Q-value is updated using the following equation:
 
-**State Discretization Process:**
+![Q-Learning Equation](https://github.com/yourusername/cartpole-qlearning/raw/main/assets/q_learning_equation.png)
+
+### State Discretization
+The continuous state space is discretized into buckets for efficient learning:
 ```python
 def discretize_state(state):
-    discretized_state = []
+    discretized = []
     for i in range(len(state)):
-        scale = (state[i] + abs(env.observation_space.low[i])) / 
-               (env.observation_space.high[i] - env.observation_space.low[i])
-        discretized_state.append(int(round((num_buckets[i] - 1) * scale)))
-        discretized_state[i] = min(num_buckets[i] - 1, max(0, discretized_state[i]))
-    return tuple(discretized_state)
+        scale = (state[i] + abs(env.observation_space.low[i])) / (env.observation_space.high[i] - env.observation_space.low[i])
+        discretized.append(min(num_buckets[i]-1, max(0, int((num_buckets[i]-1)*scale))))
+    return tuple(discretized)
 ```
+
+---
 
 ## ⚙️ Hyperparameters
 
-| Parameter        | Value | Description                          |
-|------------------|-------|--------------------------------------|
-| α (Learning Rate)| 0.1   | Step size for Q-value updates        |
-| γ (Discount)     | 0.99  | Future reward discount factor        |
-| ε Initial        | 1.0   | Starting exploration probability     |
-| ε Decay          | 0.995 | Exploration rate decay per episode   |
-| ε Minimum        | 0.01  | Minimum exploration probability      |
-| Training Episodes| 1000  | Number of training iterations        |
+| Parameter            | Value   | Description                          |
+|----------------------|---------|--------------------------------------|
+| Learning Rate (α)    | 0.1     | Step size for Q-value updates        |
+| Discount Factor (γ)  | 0.99    | Importance of future rewards         |
+| Initial Epsilon (ε)  | 1.0     | Initial exploration probability      |
+| Epsilon Decay        | 0.995   | Rate of exploration reduction        |
+| Minimum Epsilon      | 0.01    | Minimum exploration probability      |
+| Training Episodes    | 1000    | Total episodes for training          |
+
+---
 
 ## 📈 Training Progress
 
@@ -90,49 +103,67 @@ Episode: 200, Total Reward: 132.0, Epsilon: 0.367
 Episode: 1000, Total Reward: 400.0, Epsilon: 0.01
 ```
 
+---
+
 ## 📊 Evaluation Results
 
-| Metric           | Value |
-|-------------------|-------|
-| Average Reward    | 412.3 |
-| Max Reward        | 500   |
-| Min Reward        | 287   |
-| Success Rate      | 100%  |
+| Metric           | Value   |
+|------------------|---------|
+| Average Reward   | 412.3   |
+| Max Reward       | 500     |
+| Min Reward       | 287     |
+| Success Rate     | 100%    |
 
-## 🛠️ Implementation Details
+---
 
-### Code Structure
+## 🏗️ Project Structure
+
 ```
-├── assets/               # Visual assets
+cartpole-qlearning/
 ├── src/
 │   ├── train.py          # Training script
 │   └── evaluate.py       # Evaluation script
+├── assets/               # Visual assets (images, graphs)
 ├── requirements.txt      # Dependencies
-└── README.md             # This document
+├── README.md             # Documentation
+└── LICENSE               # MIT License
 ```
 
+---
+
 ## 🤝 Contributing
-Contributions welcome! Please follow our [contribution guidelines](CONTRIBUTING.md).
+
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
+5. Open a pull request.
+
+---
 
 ## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
 ---
 
 <p align="center">
   <img src="https://github.com/yourusername/cartpole-qlearning/raw/main/assets/rl_icon.png" width="100">
   <br>
-  <em>Reinforcement learning implementation demonstrating balance control through Q-learning</em>
+  <em>Reinforcement learning in action!</em>
 </p>
 ```
 
-**To make this README complete:**
-1. Create an `assets/` directory with:
-   - `cartpole_demo.gif` (screen recording of agent)
-   - `training_progress.png` (training curve plot)
-   - `rl_icon.png` (reinforcement learning themed icon)
-2. Add actual implementation files in `src/`
-3. Create `CONTRIBUTING.md` and `LICENSE` files
-4. Replace `yourusername` with actual GitHub username
+---
 
-The combination of visual elements, structured documentation, and clear code explanation creates a professional presentation while maintaining technical rigor.
+### **How to Use This README**
+1. Replace `yourusername` with your GitHub username.
+2. Add the following files to the `assets/` folder:
+   - `cartpole_demo.gif`: A screen recording of the trained agent.
+   - `q_learning_equation.png`: An image of the Q-learning equation.
+   - `training_progress.png`: A graph showing training progress.
+   - `rl_icon.png`: A reinforcement learning-themed icon.
+3. Add the implementation files (`train.py`, `evaluate.py`) to the `src/` folder.
+
+This README combines **professional styling**, **visual elements**, and **detailed explanations** to make your GitHub repository stand out! 🚀
